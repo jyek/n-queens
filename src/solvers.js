@@ -14,21 +14,42 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  // var b = new Board({'n':n});
-  // var board = b.attributes;
-  // var boardTaken = board.slice();
+  var b = new Board({'n':n});
+  var conflicts = $.extend(true, [], b.rows());
+  var pieces = $.extend(true, [], b.rows());
+  var solution = [];
+  var max = 0;
+  var iterations = 0; //check time complexity
 
-  // for (var x = 0; x < n; x++){
-  //   for (var y = 0; y < n; y++){
-  //     board.togglePiece(x,y);
-  //   }
-  // }
+  var recurse = function(pieces, conflicts, count){
+    var foundNextPiece = false;
+    var scope = n;
 
-  // recurse and place second piece until no pieces can be placed
+    // core recursion process
+    for (var x = 0; x < scope; x++){
+      for (var y = 0; y < scope; y++){
+        if (!conflicts[x][y]){
+          var p = $.extend(true, [], pieces);
+          var c = $.extend(true, [], conflicts);
+          foundNextPiece = true;
+          p[x][y] = 1;
+          c = window.addRookConflicts(x,y,c);
+          recurse(p, c, count+1);
+        }
+      }
+    }
+    // exit conditions and clean-up
+    if (!foundNextPiece){
+      if (count > max){
+        max = count;
+        solution = pieces;
+      }
+      return;
+    }
+  };
 
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  recurse(pieces, conflicts, 0);
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution), ' iterations: ', iterations);
   return solution;
 };
 
@@ -60,3 +81,21 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+// helper that updates the conflicts matrix when rook is added at (x, y)
+window.addRookConflicts = function(x, y, conflicts){
+  for (var i = 0; i < conflicts.length; i++){
+    conflicts[i][y] = 1;
+  }
+  for (var j = 0; j < conflicts.length; j++){
+    conflicts[x][j] = 1;
+  }
+  return conflicts;
+}
+
+
+// helper that updates the conflicts matrix when rook is added at (x, y)
+window.addQueenConflicts = function(x, y, conflicts){
+  return conflicts;
+}
