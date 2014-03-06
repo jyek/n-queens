@@ -14,43 +14,43 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var b = new Board({'n':n});
-  var conflicts = $.extend(true, [], b.rows());
-  var pieces = $.extend(true, [], b.rows());
-  var solution = [];
-  var max = 0;
-  var iterations = 0; //check time complexity
+  // var b = new Board({'n':n});
+  // var conflicts = $.extend(true, [], b.rows());
+  // var pieces = $.extend(true, [], b.rows());
+  // var solution = [];
+  // var max = 0;
+  // var iterations = 0; //check time complexity
 
-  var recurse = function(pieces, conflicts, count){
-    var foundNextPiece = false;
-    var scope = n;
+  // var recurse = function(pieces, conflicts, count){
+  //   var foundNextPiece = false;
+  //   var scope = n;
 
-    // core recursion process
-    for (var x = 0; x < scope; x++){
-      for (var y = 0; y < scope; y++){
-        if (!conflicts[x][y]){
-          var p = $.extend(true, [], pieces);
-          var c = $.extend(true, [], conflicts);
-          foundNextPiece = true;
-          p[x][y] = 1;
-          c = window.addRookConflicts(x,y,c);
-          recurse(p, c, count+1);
-        }
-      }
-    }
-    // exit conditions and clean-up
-    if (!foundNextPiece){
-      if (count > max){
-        max = count;
-        solution = pieces;
-      }
-      return;
-    }
-  };
+  //   // core recursion process
+  //   for (var x = 0; x < scope; x++){
+  //     for (var y = 0; y < scope; y++){
+  //       if (!conflicts[x][y]){
+  //         var p = $.extend(true, [], pieces);
+  //         var c = $.extend(true, [], conflicts);
+  //         foundNextPiece = true;
+  //         p[x][y] = 1;
+  //         c = window.addRookConflicts(x,y,c);
+  //         recurse(p, c, count+1);
+  //       }
+  //     }
+  //   }
+  //   // exit conditions and clean-up
+  //   if (!foundNextPiece){
+  //     if (count > max){
+  //       max = count;
+  //       solution = pieces;
+  //     }
+  //     return;
+  //   }
+  // };
 
-  recurse(pieces, conflicts, 0);
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution), ' iterations: ', iterations);
-  return solution;
+  // recurse(pieces, conflicts, 0);
+  // console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution), ' iterations: ', iterations);
+  // return solution;
 };
 
 
